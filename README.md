@@ -17,11 +17,11 @@
 - [x] TODO List 서비스를 사용할 수 있는 간단한 View 만들기
     - 상태 변경 제외한 나머지 구현
 
-DB 정보
+#### DB 정보
 
-MySQL
-id : root
-pw : application.properties 8번 라인에 입력  
+MySQL  
+id : root  
+pw : application.properties 8번 라인에 **입력**  
 
 CREATE DATABASE `moais` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;  
 
