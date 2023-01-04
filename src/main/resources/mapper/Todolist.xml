@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.moais.todolist.domain.todolist.TodolistMapper">
+    <insert id="regist" parameterType="Todolist">
+        INSERT INTO TO_DO_LIST
+               (LOGIN_ID, CONTENT, STATUS, FIRST_REGIST_DT, LAST_MODIFY_DT)
+        VALUES
+               (#{loginId}, #{content}, #{status}, now(), now())
+    </insert>
+    <select id="findOne" parameterType="String" resultType="Todolist">
+        SELECT ID,
+               LOGIN_ID,
+               CONTENT,
+               STATUS
+          FROM TO_DO_LIST
+         WHERE LOGIN_ID = #{loginId}
+         ORDER BY LAST_MODIFY_DT DESC
+         LIMIT 1
+    </select>
+    <select id="findAll" parameterType="String" resultType="Todolist">
+        SELECT ID,
+               LOGIN_ID,
+               CONTENT,
+               STATUS
+          FROM TO_DO_LIST
+         WHERE LOGIN_ID = #{loginId}
+         ORDER BY LAST_MODIFY_DT DESC
+    </select>
+    <update id="update" parameterType="Todolist">
+        UPDATE TO_DO_LIST
+           SET STATUS = #{status},
+               LAST_MODIFY_DT =  now()
+         WHERE ID = #{id}
+    </update>
+</mapper>

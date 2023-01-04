@@ -1,0 +1,113 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <link th:href="@{/css/bootstrap.min.css}"
+          href="../../css/bootstrap.min.css" rel="stylesheet">
+    <style>
+ .container {
+ max-width: 560px;
+ }
+ .field-error {
+ border-color: #dc3545;
+ color: #dc3545;
+ }
+ </style>
+</head>
+<body>
+<div class="container">
+    <div class="py-5 text-center">
+        <h2>TODO LIST</h2>
+    </div>
+    <div class="py-5 text-center">
+        <button class="btn btn-outline-success btn-sm" onclick="findOne()">한개 조회</button>
+        <button class="btn btn-outline-success btn-sm"onclick="findAll()">모두 조회</button>
+    </div>
+    <div class="input-group mb-3">
+        <input type="text" id="todolist" class="form-control" aria-describedby="button-addon2">
+        <button class="btn btn-outline-secondary" type="button" id="button-addon2" onclick="regTodolist()">등록</button>
+    </div>
+
+    <input id="why" type="hidden" th:value="${todolist}">
+    <div class="form-check" th:each="list, idx : ${todolist}">
+
+        <input class="form-check-input" type="checkbox" th:id="checkbox_+${idx.index}" th:contentid="${list.id}" th:onclick="checkStatus( this.getAttribute('contentid')) " th:checked="${list.status == 3}">
+        <select>
+            <th:block  th:each="statusCode, index : ${statusList}">
+                <option th:id="${list.status}" th:value="${statusCode.code}"
+                        th:text="${statusCode.displayName}"
+                        th:selected="${list.status} == ${statusCode.code}"></option>
+            </th:block>
+        </select>
+        [[${list.status}]]
+        [[${list.content}]]
+    </div>
+    <div class="py-5 text-center">
+        <form action="/logout" method="post" style="display: inline;">
+            <button class="btn btn-outline-secondary btn-sm" type="submit">로그아웃</button>
+        </form>
+        <form id="signOut" method="get" style="display: inline;">
+            <button class="btn btn-outline-secondary btn-sm" onclick="signOut()">탈퇴</button>
+        </form>
+    </div>
+
+
+</div> <!-- /container -->
+</body>
+</html>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+
+    let regTodolist = function(){
+        axios({
+          url: '/to-do-list/regist',
+          method: 'post',
+          data: {
+            content: document.getElementById("todolist").value,
+            status : '1'
+          }
+        }).then((res)=>{
+            location.href="/to-do-list/findAll";
+        });
+    };
+
+    let checkStatus = function(id) {
+        axios({
+          url: '/to-do-list/update',
+          method: 'post',
+          data: {
+            id: id,
+            status : '3'
+          }
+        }).then((res)=>{
+            location.href="/to-do-list/findAll";
+        });
+    }
+
+    let findOne = function() {
+        axios({
+          url: '/to-do-list/findOne',
+          method: 'get',
+        }).then((res)=>{
+            location.href="/to-do-list/findOne";
+        });
+    }
+
+    let findAll = function() {
+        axios({
+          url: '/to-do-list/findAll',
+          method: 'get',
+        }).then((res)=>{
+            location.href="/to-do-list/findAll";
+        });
+    }
+
+    let signOut = function() {
+        if(confirm('정말 탈퇴하시겠습니까?')){
+            let signOutForm = document.getElementById('signOut');
+            signOutForm.submit;
+        }
+    }
+
+</script>

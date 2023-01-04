@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.moais.todolist.domain.member.MemberMapper">
+    <insert id="save" parameterType="Member">
+        INSERT INTO MEMBER
+               (LOGIN_ID, PASSWORD, NICKNAME, JOIN_DT, SIGN_OUT_YN)
+        VALUES
+               (#{loginId}, #{password}, #{nickname}, NOW(), 'N')
+    </insert>
+
+
+    <select id="findByLoginId" resultType="Member" parameterType="String">
+        SELECT ID, LOGIN_ID, PASSWORD, JOIN_DT
+          FROM MEMBER
+         WHERE LOGIN_ID = #{loginId}
+           AND SIGN_OUT_YN = 'N'
+    </select>
+
+    <update id="signOut" parameterType="String">
+        UPDATE MEMBER
+           SET SIGN_OUT_YN = 'Y',
+               SIGN_OUT_DT = NOW()
+         WHERE LOGIN_ID = #{loginId}
+    </update>
+
+
+</mapper>
